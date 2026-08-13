@@ -1,0 +1,190 @@
+---
+title: 'Glass Panel'
+description: 'A frosted-glass info card inside a groupbox with title, description, icon, and optional badge.'
+---
+
+import { TypeTable } from '@/components/type-table';
+
+## Usage
+
+Create a Glass Panel by calling `AddGlassPanel` on a Groupbox.
+
+```lua
+Groupbox:AddGlassPanel({
+    Title       = "Status",
+    Description = "Connected to server.",
+    Icon        = "wifi",
+    Badge       = "LIVE",
+})
+```
+
+<TypeTable
+  type={{
+    Title: {
+      description: 'Large text shown at the top of the panel',
+      type: 'string',
+      default: '"Glass Panel"',
+      required: false
+    },
+    Description: {
+      description: 'Smaller text below the title',
+      type: 'string',
+      default: '""',
+      required: false
+    },
+    Icon: {
+      description: 'Lucide icon name shown to the left of the title',
+      type: 'string',
+      default: 'nil',
+      required: false
+    },
+    IconColor: {
+      description: 'Color of the icon. Accepts a scheme key or Color3.',
+      type: 'string | Color3',
+      default: '"AccentColor"',
+      required: false
+    },
+    Badge: {
+      description: 'Pill badge text displayed in the top-right corner',
+      type: 'string',
+      default: 'nil',
+      required: false
+    },
+    Height: {
+      description: 'Height of the panel in pixels',
+      type: 'number',
+      default: '76',
+      required: false
+    },
+    Transparency: {
+      description: 'Background transparency of the panel frame',
+      type: 'number',
+      default: '0.18',
+      required: false
+    },
+    CornerRadius: {
+      description: 'Corner radius override in pixels',
+      type: 'number',
+      default: 'Library.CornerRadius',
+      required: false
+    },
+    AccentColor: {
+      description: 'Accent color used for the stroke, gradient, icon, and badge. Accepts a scheme key or Color3.',
+      type: 'string | Color3',
+      default: '"AccentColor"',
+      required: false
+    },
+    StrokeColor: {
+      description: 'Override color for the border stroke',
+      type: 'string | Color3',
+      default: 'AccentColor',
+      required: false
+    },
+    StrokeThickness: {
+      description: 'Border stroke thickness',
+      type: 'number',
+      default: '1',
+      required: false
+    },
+    StrokeTransparency: {
+      description: 'Border stroke transparency',
+      type: 'number',
+      default: '0.35',
+      required: false
+    },
+    Gradient: {
+      description: 'Set to false to disable the background gradient',
+      type: 'boolean',
+      default: 'true',
+      required: false
+    },
+    GradientColorSequence: {
+      description: 'Custom ColorSequence for the gradient',
+      type: 'ColorSequence',
+      default: 'AccentColor → MainColor',
+      required: false
+    },
+    GradientRotation: {
+      description: 'Rotation angle of the gradient in degrees',
+      type: 'number',
+      default: '25',
+      required: false
+    },
+    TitleSize: {
+      description: 'Font size of the title label',
+      type: 'number',
+      default: '16',
+      required: false
+    },
+    DescriptionSize: {
+      description: 'Font size of the description label',
+      type: 'number',
+      default: '13',
+      required: false
+    },
+    Visible: {
+      description: 'Whether the panel is visible',
+      type: 'boolean',
+      default: 'true',
+      required: false
+    },
+  }}
+/>
+
+## Methods
+
+#### SetTitle
+Updates the title text.
+
+```lua
+Panel:SetTitle("Disconnected")
+```
+
+#### SetDescription
+Updates the description text.
+
+```lua
+Panel:SetDescription("Lost connection to server.")
+```
+
+#### SetVisible
+Shows or hides the panel.
+
+```lua
+Panel:SetVisible(false)
+```
+
+## Examples
+
+### Basic info card
+
+```lua
+Left:AddGlassPanel({
+    Title       = "Player",
+    Description = "Naellx  •  Rank 42",
+    Icon        = "user",
+})
+```
+
+### Status badge
+
+```lua
+Left:AddGlassPanel({
+    Title       = "Server",
+    Description = "asia-southeast1  •  24ms",
+    Icon        = "server",
+    Badge       = "ONLINE",
+    AccentColor = Color3.fromRGB(80, 200, 120),
+})
+```
+
+### No gradient
+
+```lua
+Left:AddGlassPanel({
+    Title    = "Warning",
+    Icon     = "triangle-alert",
+    Gradient = false,
+    Height   = 50,
+})
+```

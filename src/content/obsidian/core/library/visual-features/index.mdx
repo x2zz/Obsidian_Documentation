@@ -1,0 +1,191 @@
+---
+title: 'Visual Features'
+description: 'Opt-in visual enhancements added by Obsidian Modified — background blur, entrance animations, groupbox glow, window outer glow, and tab color support.'
+---
+
+import { InlineTOC } from 'fumadocs-ui/components/inline-toc';
+import { TypeTable } from '@/components/type-table';
+
+<InlineTOC items={toc} />
+
+---
+
+## Overview
+
+Obsidian Modified adds six opt-in visual features to `Library:CreateWindow()`. All default to `false` so existing scripts are unaffected.
+
+```lua
+local Window = Library:CreateWindow({
+    Title  = "My Hub",
+    Footer = "v1.0.0",
+    Icon   = "flame",
+
+    BackgroundBlur       = true,
+    TitleAnimation       = true,
+    IconAnimation        = true,
+    AddGroupboxAnimation = true,
+    -- Window outer glow is always on (no option needed)
+})
+```
+
+---
+
+## BackgroundBlur
+
+Creates a `BlurEffect` instance in `game:GetService("Lighting")` when the window is first built.
+
+- **Show**: tweens `BlurEffect.Size` from `0` → `18` using `Library.WindowAnimationInfo`
+- **Hide**: tweens `BlurEffect.Size` from `18` → `0`
+
+The tween is driven by `Window:Toggle()`, so it naturally syncs with the toggle keybind.
+
+```lua
+Library:CreateWindow({
+    BackgroundBlur = true,
+})
+```
+
+<TypeTable
+  type={{
+    BackgroundBlur: {
+      description: 'Enable background blur tween on window open/close',
+      type: 'boolean',
+      default: 'false',
+      required: false
+    },
+  }}
+/>
+
+---
+
+## TitleAnimation
+
+On the first frame after window creation, the title holder is offset `-40px` on the X axis and all child `TextLabel` / `ImageLabel` instances are set to fully transparent. After a `0.1s` delay, a `0.6s Quad Out` tween slides everything back into position and fades it in.
+
+```lua
+Library:CreateWindow({
+    TitleAnimation = true,
+})
+```
+
+<TypeTable
+  type={{
+    TitleAnimation: {
+      description: 'Slide + fade in the title area on launch',
+      type: 'boolean',
+      default: 'false',
+      required: false
+    },
+  }}
+/>
+
+---
+
+## IconAnimation
+
+Wraps the window icon in a container `Frame` and loops a full `360°` rotation every `8 seconds` using a `Linear` tween. The loop runs for the lifetime of the window.
+
+```lua
+Library:CreateWindow({
+    Icon          = "flame",
+    IconAnimation = true,
+})
+```
+
+<TypeTable
+  type={{
+    IconAnimation: {
+      description: 'Loop a 360° spin tween on the window icon every 8 seconds',
+      type: 'boolean',
+      default: 'false',
+      required: false
+    },
+  }}
+/>
+
+---
+
+## AddGroupboxAnimation
+
+Injects an accent-colored glow line into every groupbox. The line sweeps left → right over `2 seconds` then resets, repeating every `3 seconds`. `ClipsDescendants` is set on the groupbox holder automatically.
+
+```lua
+Library:CreateWindow({
+    AddGroupboxAnimation = true,
+})
+```
+
+<TypeTable
+  type={{
+    AddGroupboxAnimation: {
+      description: 'Sweep an accent-colored glow line across each groupbox on a loop',
+      type: 'boolean',
+      default: 'false',
+      required: false
+    },
+  }}
+/>
+
+---
+
+## Window Outer Glow
+
+Always active — no option required. A `9-slice` `ImageLabel` (`rbxassetid://6014261993`) is placed outside `MainFrame` at `ZIndex -1`, offset `-15px` on both axes with `+30px` size padding. It pulses `ImageTransparency` between `0.4` and `0.2` on a `Sine InOut` infinite tween with a `2 second` cycle.
+
+No configuration needed — it activates for every window automatically.
+
+---
+
+## Tab Color Support
+
+`Window:AddTab()` now accepts `Color`, `TextColor`, and `IconColor` in its info table. Pass a scheme key string (e.g. `"AccentColor"`) or a `Color3` value. The color is registered to the color registry so it syncs when the theme changes.
+
+```lua
+-- Using a scheme key
+local Premium = Window:AddTab({
+    Name  = "Premium",
+    Icon  = "crown",
+    Color = "AccentColor",
+})
+
+-- Using a raw Color3
+local VIP = Window:AddTab({
+    Name  = "VIP",
+    Icon  = "star",
+    Color = Color3.fromRGB(255, 200, 50),
+})
+```
+
+<TypeTable
+  type={{
+    Color: {
+      description: 'Tint both the tab label and icon. Accepts a scheme key string or Color3.',
+      type: 'string | Color3',
+      default: 'nil',
+      required: false
+    },
+    TextColor: {
+      description: 'Tint only the tab label text. Overridden by Color if both are set.',
+      type: 'string | Color3',
+      default: 'nil',
+      required: false
+    },
+    IconColor: {
+      description: 'Tint only the tab icon. Overridden by Color if both are set.',
+      type: 'string | Color3',
+      default: 'nil',
+      required: false
+    },
+  }}
+/>
+
+### Available scheme keys
+
+| Key | Description |
+|-----|-------------|
+| `"AccentColor"` | Primary accent color |
+| `"FontColor"` | Default text color |
+| `"MainColor"` | Main background color |
+| `"BackgroundColor"` | Secondary background |
+| `"DarkColor"` | Dark variant |
+| `"WhiteColor"` | Light variant |

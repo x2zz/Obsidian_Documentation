@@ -1,0 +1,67 @@
+---
+title: 'Groupboxes'
+description: 'Groupboxes are used to group ui elements together in a tab.'
+---
+
+import DemoGroupbox from "@/components/demo/Groupbox";
+
+[Groupboxes](/obsidian/structure/groupboxes) and [Tabboxes](/obsidian/structure/tabboxes) are the basic building block of each tab, you need it to group together UI elements. Any groupbox you create can be either a left or right groupbox.
+
+<DemoGroupbox />
+
+## Usage
+
+You can create a Groupbox by calling the `AddLeftGroupbox` or `AddRightGroupbox` method on a Tab.
+
+### Arguments
+
+```lua
+local LeftGroupBox = Tab:AddLeftGroupbox("Left Groupbox", "wrench")
+local RightGroupBox = Tab:AddRightGroupbox("Right Groupbox")
+```
+
+| Arg Idx | Argument Description | Type | Default |
+| --- | --- | --- | --- |
+| 1 | Title of the groupbox | string | nil |
+| 2 | Custom Icon or Icon name from lucide.dev | string | nil |
+| 3 | Whether the groupbox should be initially visible | boolean | true |
+| 4 | Whether the groupbox should be initially collapsed | boolean | false |
+| 5 | Whether collapsing the groupbox should be disabled | boolean | false |
+
+## Methods
+
+### SetVisible
+
+Sets the visibility of the groupbox.
+
+```lua
+Groupbox:SetVisible(Visible: boolean)
+```
+
+| Argument | Type | Description |
+| --- | --- | --- |
+| Visible | boolean | Whether the groupbox should be visible |
+
+### Show
+
+Shows the groupbox. This is an alias for `SetVisible(true)`.
+
+```lua
+Groupbox:Show()
+```
+
+### Hide
+
+Hides the groupbox. This is an alias for `SetVisible(false)`.
+
+```lua
+Groupbox:Hide()
+```
+
+### AddTabbox
+
+Creates a Tabbox inside this groupbox, allowing you to nest tabs.
+
+```lua
+local MyTabbox = Groupbox:AddTabbox()
+```

@@ -1,0 +1,38 @@
+---
+title: 'Tabboxes'
+description: 'Tabboxes can condense multiple groupboxes into a single groupbox.'
+---
+
+import DemoTabbox from "@/components/demo/Tabbox";
+
+[Groupboxes](/obsidian/structure/groupboxes) and [Tabboxes](/obsidian/structure/tabboxes) are the basic building block of each tab, you need it to group together UI elements. Any tabbox you create can be either a left or right tabbox.
+
+<DemoTabbox />
+
+## Usage
+
+You can create a Tabbox by calling the `AddLeftTabbox` or `AddRightTabbox` method on a Tab.
+
+### Arguments
+
+```lua
+local LeftTabBox = Tab:AddLeftTabbox("Left Tabbox")
+local RightTabBox = Tab:AddRightTabbox("Right Tabbox")
+```
+
+| Arg Idx | Argument Description | Type | Default |
+| --- | --- | --- | --- |
+| 1 | Title of the tabbox | string | nil |
+
+## Methods
+
+You can use the following method to create a "groupbox" inside a tabbox:
+
+```lua
+local Tab = Tabbox:AddTab("Tab Name", "home")
+```
+
+| Arg Idx | Argument Description | Type | Default |
+| --- | --- | --- | --- |
+| 1 | Title of the tab in the tabbox | string | nil |
+| 2 | Custom Icon or Icon name from lucide.dev | string | nil |

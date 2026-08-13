@@ -1,0 +1,122 @@
+---
+title: 'Hold Button'
+description: 'A button that requires the user to hold it for a set duration before firing.'
+---
+
+import { TypeTable } from '@/components/type-table';
+
+## Usage
+
+Create a Hold Button by calling `AddHoldButton` on a Groupbox. The user must hold the button for the full `HoldTime` duration — releasing early resets the progress.
+
+```lua
+Groupbox:AddHoldButton({
+    Text     = "Delete Save",
+    HoldTime = 2,
+    Risky    = true,
+    Func     = function()
+        print("Held for 2 seconds!")
+    end,
+})
+```
+
+<TypeTable
+  type={{
+    Text: {
+      description: 'Label displayed on the button',
+      type: 'string',
+      default: '""',
+      required: false
+    },
+    Func: {
+      description: 'Callback fired when the hold completes',
+      type: 'function',
+      default: 'nil',
+      required: true
+    },
+    HoldTime: {
+      description: 'Seconds the user must hold before the callback fires',
+      type: 'number',
+      default: '1',
+      required: false
+    },
+    Risky: {
+      description: 'Tints the label red to signal a destructive action',
+      type: 'boolean',
+      default: 'false',
+      required: false
+    },
+    Disabled: {
+      description: 'Prevents interaction when true',
+      type: 'boolean',
+      default: 'false',
+      required: false
+    },
+    Visible: {
+      description: 'Whether the element is visible',
+      type: 'boolean',
+      default: 'true',
+      required: false
+    },
+    Tooltip: {
+      description: 'Tooltip shown on hover',
+      type: 'string',
+      default: 'nil',
+      required: false
+    },
+    DisabledTooltip: {
+      description: 'Tooltip shown when the button is disabled',
+      type: 'string',
+      default: 'nil',
+      required: false
+    },
+  }}
+/>
+
+## How it works
+
+While the button is held, an accent-colored fill bar sweeps left → right over the `HoldTime` duration. If the user releases early or the mouse leaves the button, the fill bar resets with a short `0.15s` ease-out tween. The callback only fires if the hold completes fully.
+
+## Methods
+
+#### SetText
+Updates the button label.
+
+```lua
+HoldBtn:SetText("New Label")
+```
+
+#### SetDisabled
+Enables or disables the button.
+
+```lua
+HoldBtn:SetDisabled(true)
+```
+
+#### SetVisible
+Shows or hides the button.
+
+```lua
+HoldBtn:SetVisible(false)
+```
+
+#### Destroy
+Removes the button from the UI.
+
+```lua
+HoldBtn:Destroy()
+```
+
+## Example
+
+```lua
+local Danger = Left:AddHoldButton({
+    Text     = "Reset All Data",
+    HoldTime = 3,
+    Risky    = true,
+    Func     = function()
+        -- wipe data here
+        Library:NotifyWarning("All data has been reset.")
+    end,
+})
+```

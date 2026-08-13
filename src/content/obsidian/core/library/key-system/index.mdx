@@ -1,0 +1,361 @@
+---
+title: 'Key System'
+description: 'Four built-in key system functions powered by Arqel UI — supports Junkie, Lua Aegis, KeyForge, and custom OnVerify callbacks.'
+---
+
+import { InlineTOC } from 'fumadocs-ui/components/inline-toc';
+import { Tab, Tabs } from "fumadocs-ui/components/tabs";
+import { TypeTable } from '@/components/type-table';
+
+<InlineTOC items={toc} />
+
+---
+
+## Overview
+
+Obsidian Modified includes four key system functions that display an [Arqel UI](https://github.com/Cobruhehe/expert-octo-doodle) key entry screen before your main script runs.
+
+Arqel is loaded at runtime from GitHub. If `getgenv().Arqel` is already present (e.g. loaded by another script), it reuses that instance.
+
+All four functions **block execution** until the user enters a valid key or closes the window. If the key check fails or the user closes the screen, the function returns `nil` — check for this before continuing.
+
+```lua
+local key = Library:CreateKeySystem({ ... })
+if not key then return end  -- user closed or key was invalid
+
+-- main script below
+local Window = Library:CreateWindow({ ... })
+```
+
+---
+
+## CreateKeySystem
+
+Authenticates via the **[Junkie](https://jnkie.com)** SDK.
+
+```lua
+local key = Library:CreateKeySystem({
+    Service    = "My Hub",
+    Identifier = "12345",
+    Provider   = "Mixed",
+    Title      = "My Hub",
+    Subtitle   = "Enter your key below",
+    GetKey     = "https://linkvertise.com/...",
+    Discord    = "https://discord.gg/...",
+    Remember   = true,
+    AutoLoad   = true,
+    Blur       = true,
+    SuccessCallback = function(k) print("Key:", k) end,
+    FailCallback    = function(e) warn("Error:", e) end,
+})
+if not key then return end
+```
+
+<TypeTable
+  type={{
+    Service: {
+      description: 'Your Junkie service name',
+      type: 'string',
+      default: 'nil',
+      required: true
+    },
+    Identifier: {
+      description: 'Your Junkie service identifier',
+      type: 'string',
+      default: 'nil',
+      required: true
+    },
+    Provider: {
+      description: 'Junkie link provider (e.g. "Mixed", "Linkvertise")',
+      type: 'string',
+      default: '"Mixed"',
+      required: false
+    },
+    Title: {
+      description: 'Title shown on the Arqel key screen',
+      type: 'string',
+      default: '"Key System"',
+      required: false
+    },
+    Subtitle: {
+      description: 'Subtitle shown on the Arqel key screen',
+      type: 'string',
+      default: '""',
+      required: false
+    },
+    GetKey: {
+      description: 'URL shown on the "Get Key" button',
+      type: 'string',
+      default: 'nil',
+      required: false
+    },
+    Discord: {
+      description: 'Discord invite URL shown on the Discord button',
+      type: 'string',
+      default: 'nil',
+      required: false
+    },
+    Remember: {
+      description: 'Cache the key locally so the user does not need to re-enter it',
+      type: 'boolean',
+      default: 'true',
+      required: false
+    },
+    AutoLoad: {
+      description: 'Automatically load the cached key on next launch',
+      type: 'boolean',
+      default: 'true',
+      required: false
+    },
+    Blur: {
+      description: 'Enable background blur on the key screen',
+      type: 'boolean',
+      default: 'true',
+      required: false
+    },
+    SuccessCallback: {
+      description: 'Called with the validated key string on success',
+      type: 'function',
+      default: 'nil',
+      required: false
+    },
+    FailCallback: {
+      description: 'Called with the error message on failure',
+      type: 'function',
+      default: 'nil',
+      required: false
+    },
+  }}
+/>
+
+---
+
+## CreateAegisKeySystem
+
+Authenticates via the **[Lua Aegis](https://luaegis.net)** SDK.
+
+```lua
+local key = Library:CreateAegisKeySystem({
+    ScriptId        = "YOUR_SCRIPT_ID",
+    Title           = "My Hub",
+    Subtitle        = "Enter your key below",
+    GetKey          = "https://...",
+    Discord         = "https://discord.gg/...",
+    AutoLoadScript  = true,
+    SuccessCallback = function(k) print("Key:", k) end,
+    FailCallback    = function(e) warn("Error:", e) end,
+})
+if not key then return end
+```
+
+<TypeTable
+  type={{
+    ScriptId: {
+      description: 'Your Lua Aegis script ID from the dashboard',
+      type: 'string',
+      default: 'nil',
+      required: true
+    },
+    Title: {
+      description: 'Title shown on the Arqel key screen',
+      type: 'string',
+      default: '"Key System"',
+      required: false
+    },
+    Subtitle: {
+      description: 'Subtitle shown on the Arqel key screen',
+      type: 'string',
+      default: '""',
+      required: false
+    },
+    GetKey: {
+      description: 'URL for the "Get Key" button',
+      type: 'string',
+      default: 'nil',
+      required: false
+    },
+    Discord: {
+      description: 'Discord invite URL',
+      type: 'string',
+      default: 'nil',
+      required: false
+    },
+    AutoLoadScript: {
+      description: 'Automatically execute the script after successful verification',
+      type: 'boolean',
+      default: 'false',
+      required: false
+    },
+    SuccessCallback: {
+      description: 'Called with the validated key string on success',
+      type: 'function',
+      default: 'nil',
+      required: false
+    },
+    FailCallback: {
+      description: 'Called with the error message on failure',
+      type: 'function',
+      default: 'nil',
+      required: false
+    },
+  }}
+/>
+
+---
+
+## CreateKeyForgeKeySystem
+
+Authenticates via the **[KeyForge](https://keyforge.win)** SDK.
+
+```lua
+local key = Library:CreateKeyForgeKeySystem({
+    ProjectId        = "YOUR_PROJECT_ID",
+    ScriptId         = "YOUR_SCRIPT_ID",
+    IntegrationToken = "SIGNED_TOKEN_FROM_DASHBOARD",
+    Title            = "My Hub",
+    Subtitle         = "Enter your key below",
+    GetKey           = "https://...",
+    Discord          = "https://discord.gg/...",
+    AutoLoadScript   = true,
+    SuccessCallback  = function(k) print("Key:", k) end,
+    FailCallback     = function(e) warn("Error:", e) end,
+})
+if not key then return end
+```
+
+<TypeTable
+  type={{
+    ProjectId: {
+      description: 'Your KeyForge project ID',
+      type: 'string',
+      default: 'nil',
+      required: true
+    },
+    ScriptId: {
+      description: 'Your KeyForge script ID',
+      type: 'string',
+      default: 'nil',
+      required: true
+    },
+    IntegrationToken: {
+      description: 'Signed integration token from the KeyForge dashboard',
+      type: 'string',
+      default: 'nil',
+      required: true
+    },
+    Title: {
+      description: 'Title shown on the Arqel key screen',
+      type: 'string',
+      default: '"Key System"',
+      required: false
+    },
+    Subtitle: {
+      description: 'Subtitle shown on the Arqel key screen',
+      type: 'string',
+      default: '""',
+      required: false
+    },
+    GetKey: {
+      description: 'URL for the "Get Key" button',
+      type: 'string',
+      default: 'nil',
+      required: false
+    },
+    Discord: {
+      description: 'Discord invite URL',
+      type: 'string',
+      default: 'nil',
+      required: false
+    },
+    AutoLoadScript: {
+      description: 'Automatically execute the script after successful verification',
+      type: 'boolean',
+      default: 'false',
+      required: false
+    },
+    SuccessCallback: {
+      description: 'Called with the validated key string on success',
+      type: 'function',
+      default: 'nil',
+      required: false
+    },
+    FailCallback: {
+      description: 'Called with the error message on failure',
+      type: 'function',
+      default: 'nil',
+      required: false
+    },
+  }}
+/>
+
+---
+
+## CreateArqelKeySystem
+
+Uses a custom **`OnVerify`** callback — bring your own validation logic.
+
+```lua
+local key = Library:CreateArqelKeySystem({
+    Title   = "My Hub",
+    Subtitle = "Enter your key below",
+    GetKey  = "https://...",
+    Discord = "https://discord.gg/...",
+    OnVerify = function(inputKey)
+        -- Call your own backend here
+        if inputKey == "MY-SECRET-KEY" then
+            return { valid = true }
+        end
+        return { valid = false, error = "KEY_INVALID", message = "That key is not valid." }
+    end,
+    SuccessCallback = function(k) print("Key:", k) end,
+    FailCallback    = function(e) warn("Error:", e) end,
+})
+if not key then return end
+```
+
+<TypeTable
+  type={{
+    OnVerify: {
+      description: 'Function called with the entered key string. Must return a table with `valid: boolean`, and optionally `error: string` and `message: string` on failure.',
+      type: 'function',
+      default: 'nil',
+      required: true
+    },
+    Title: {
+      description: 'Title shown on the Arqel key screen',
+      type: 'string',
+      default: '"Key System"',
+      required: false
+    },
+    Subtitle: {
+      description: 'Subtitle shown on the Arqel key screen',
+      type: 'string',
+      default: '""',
+      required: false
+    },
+    GetKey: {
+      description: 'URL for the "Get Key" button',
+      type: 'string',
+      default: 'nil',
+      required: false
+    },
+    Discord: {
+      description: 'Discord invite URL',
+      type: 'string',
+      default: 'nil',
+      required: false
+    },
+    SuccessCallback: {
+      description: 'Called with the validated key string on success',
+      type: 'function',
+      default: 'nil',
+      required: false
+    },
+    FailCallback: {
+      description: 'Called with the error message on failure',
+      type: 'function',
+      default: 'nil',
+      required: false
+    },
+  }}
+/>

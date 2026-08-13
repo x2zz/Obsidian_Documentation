@@ -1,0 +1,51 @@
+---
+title: 'Getting Started'
+description: 'Getting Started with Obsidian Modified'
+---
+
+![Obsidian Modified](/images/obsidian/obsidian.png)
+
+---
+
+## Introduction
+Welcome to the documentation for **Obsidian Modified** — a modded fork of [Obsidian](https://github.com/deividcomsono/Obsidian) by deivid, extended with visual features and [Arqel](https://github.com/Cobruhehe/expert-octo-doodle) key system support by [Naellx](https://github.com/Naellx).
+
+*The API is fully compatible with the original Obsidian and is modeled after the [LinoriaLib](https://github.com/mstudio45/linorialib) UI library.*
+
+## Why Obsidian Modified?
+- Everything from the original Obsidian
+- Background blur on window open/close
+- Title and icon entrance animations
+- Groupbox glow line sweep animation
+- Window outer glow (pulsing drop shadow)
+- Per-tab label and icon color support
+- Built-in Arqel key system (Junkie, Lua Aegis, KeyForge, custom)
+
+## Installation
+Obsidian Modified is available to use on **Roblox Executors**. Please refer to the [installation guide](./obsidian/installation).
+
+## Quick Start
+First understand the [structure](./obsidian/structure) of Obsidian **(This is important if you are not familiar with LinoriaLib)**
+
+Then create a [window](./obsidian/core/library/window) and start adding [tabs](./obsidian/structure/tabs) and [groupboxes](./obsidian/structure/groupboxes) to it.
+
+If you prefer reading code directly, check out the [example script](https://github.com/Naellx/Obsidian/blob/main/Examples/Example_Basic_Window.lua) on GitHub.
+
+## Visual Features
+The modded library adds opt-in visual features via `CreateWindow`. See [Visual Features](./obsidian/core/library/visual-features) for full documentation.
+
+```lua
+local Window = Library:CreateWindow({
+    Title = "My Hub",
+    BackgroundBlur       = true,
+    TitleAnimation       = true,
+    IconAnimation        = true,
+    AddGroupboxAnimation = true,
+})
+```
+
+## Key System
+Four key system functions are available out of the box using [Arqel UI](https://github.com/Cobruhehe/expert-octo-doodle). See [Key System](./obsidian/core/library/key-system) for full documentation.
+
+## Suggestions and Bug Reports
+Open an issue or pull request on [Naellx/Obsidian](https://github.com/Naellx/Obsidian).
