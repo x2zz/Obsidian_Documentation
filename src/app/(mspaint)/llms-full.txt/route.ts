@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { source } from "@/lib/source";
 import { getLLMText } from "@/lib/get-llm-text";
 

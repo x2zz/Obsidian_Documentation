@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import { getLLMText } from "@/lib/get-llm-text";
 import { obsidian } from "@/lib/source";
 import { notFound } from "next/navigation";
